@@ -63,7 +63,7 @@ body.transition-start .moon-arc {
 .main-hero {
   width: 100%;
   min-height: 550px;
-  background: url("assets/group3.webp") center/cover no-repeat;
+  background: url("/assets/group3.webp") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,7 +107,7 @@ body.page-changing {
 }
 
 .main {
-  background: url("assets/LandingPage_Macbook.webp");
+  background: url("/assets/LandingPage_Macbook.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -576,12 +576,12 @@ body.main-page .cta-btn::after {
 
 body.main-page .cta-btn::before {
   left: 15px;
-  background-image: url("frame1.svg");
+  background-image: url("/frame1.svg");
 }
 
 body.main-page .cta-btn::after {
   right: 15px;
-  background-image: url("frame1.svg");
+  background-image: url("/frame1.svg");
   transform: translateY(-50%) rotate(180deg);
 }
 
@@ -890,7 +890,8 @@ body.main-page .cta-btn.purple::after {
   }
 }
 
-*/ .hero-content {
+
+.hero-content {
   width: 71%;
   /* height: 64px; */
   /* max-width: 800px; */
@@ -1707,7 +1708,7 @@ body.main-page .cta-btn.purple::after {
 /* Final CTA */
 .final-cta {
   background:
-    url("assets/Group.html\ 4.webp"),
+    url("/assets/Group4.webp"),
     linear-gradient(110.62deg, #371435 0.29%, #1d0a1c 99.71%);
   background-size: cover;
   background-repeat: no-repeat;
@@ -1745,7 +1746,7 @@ body.main-page .cta-btn.purple::after {
 
 /* Footer */
 footer {
-  background: url("assets/rectangle17.webp") center center/cover no-repeat;
+  background: url("/assets/rectangle17.webp") center center/cover no-repeat;
   padding: 60px 40px 0;
   color: #e4aef2;
   font-family: "DM Sans", sans-serif;
@@ -2600,7 +2601,7 @@ html {
 
   /* Mobile Glow */
   .g2-overlay {
-    content: url('assets/mdglow.webp');
+    content: url('/assets/mdglow.webp');
     width: 100% !important;
     max-width: 100% !important;
     min-width: 100% !important;
@@ -2783,7 +2784,7 @@ html {
       min-height: 100vh !important;
       padding: 40px 0 !important;
       margin: 0 !important;
-      background: url("assets/rectangle14.webp") center center/cover no-repeat !important;
+      background: url("/assets/rectangle14.webp") center center/cover no-repeat !important;
       color: white !important;
       position: relative !important;
       display: block !important;
@@ -3235,7 +3236,7 @@ html {
     max-width: 100% !important;
     border-radius: 0 !important;
     position: relative !important;
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('09884856aa3ca71ba710fb2de772a13454a8e5c8.html') center/cover no-repeat !important;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/assets/09884856aa3ca71ba710fb2de772a13454a8e5c8.webp') center/cover no-repeat !important;
   }
   
   .activate-section h2 {
@@ -3392,7 +3393,7 @@ html {
     border-radius: 10px !important;
     overflow: hidden;
     position: relative !important;
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('09884856aa3ca71ba710fb2de772a13454a8e5c8.html') center/cover no-repeat !important;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/assets/09884856aa3ca71ba710fb2de772a13454a8e5c8.webp') center/cover no-repeat !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   }
   
@@ -3470,7 +3471,7 @@ html {
     width: 100%;
     height: 100%;
     position: relative;
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('09884856aa3ca71ba710fb2de772a13454a8e5c8.html') center/cover no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/assets/09884856aa3ca71ba710fb2de772a13454a8e5c8.webp') center/cover no-repeat;
   }
 
   .mobile-activate h2 {
