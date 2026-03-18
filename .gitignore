@@ -21,7 +21,6 @@ hts-cache
 www.healholistic.in
 
 # Large media files
-*.mp3
 *.mp4
 public/blogcard4.webp
 public/istockphoto-*

@@ -1,0 +1,576 @@
+﻿diff --git a/src/pages/BlogPost.jsx b/src/pages/BlogPost.jsx
+index b13ca6f..8d6b6f0 100644
+--- a/src/pages/BlogPost.jsx
++++ b/src/pages/BlogPost.jsx
+@@ -277,90 +277,490 @@ const BlogPost = () => {
+   }
+ 
+   return (
+-    <div className="blog-post-view" style={{ background: '#FDF7FE', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}>
+-      {/* 1. Hero / Header */}
+-      <section className="blog-post-hero" style={{ 
+-        position: 'relative', 
+-        padding: '160px 20px 80px', 
+-        textAlign: 'center', 
+-        background: 'linear-gradient(rgba(45, 13, 45, 0.7), rgba(45, 13, 45, 0.7)), url(' + post.image + ')',
+-        backgroundSize: 'cover',
+-        backgroundPosition: 'center',
+-        color: 'white'
+-      }}>
+-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+-          <span style={{ 
+-            background: 'rgba(255, 255, 255, 0.2)', 
+-            padding: '6px 20px', 
+-            borderRadius: '50px', 
+-            fontSize: '12px', 
+-            textTransform: 'uppercase', 
+-            letterSpacing: '2px',
+-            backdropFilter: 'blur(10px)',
+-            marginBottom: '20px',
+-            display: 'inline-block'
+-          }}>{post.category}</span>
+-          <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: '800', lineHeight: '1.2', marginBottom: '20px' }}>{post.title}</h1>
+-          <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', fontSize: '14px', opacity: 0.8 }}>
+-            <span>By {post.author}</span>
+-            <span>ΓÇó</span>
+-            <span>{post.date}</span>
+-          </div>
+-        </div>
+-      </section>
+-
+-      {/* 2. Content Section */}
+-      <section style={{ padding: '80px 20px' }}>
+-        <div style={{ maxWidth: '800px', margin: '0 auto', background: 'white', padding: '50px', borderRadius: '30px', boxShadow: '0 15px 40px rgba(79, 28, 76, 0.05)' }}>
+-          <p style={{ fontSize: '18px', lineHeight: '1.8', color: '#4F1C4C', fontWeight: '500', marginBottom: '40px', fontStyle: 'italic' }}>
+-            {post.intro}
+-          </p>
+-
+-          {post.sections.map((section, idx) => (
+-            <div key={idx} style={{ marginBottom: '40px' }}>
+-              <h2 style={{ fontSize: '28px', color: '#4F1C4C', marginBottom: '20px', fontWeight: '800' }}>{section.title}</h2>
+-              {section.content && (
+-                <p style={{ fontSize: '16px', lineHeight: '1.7', color: '#6D436A' }}>{section.content}</p>
+-              )}
+-              {section.subsections && section.subsections.map((sub, sidx) => (
+-                <div key={sidx} style={{ marginBottom: '25px', background: 'rgba(240, 212, 243, 0.2)', padding: '20px', borderRadius: '15px' }}>
+-                  <h4 style={{ color: '#4F1C4C', marginBottom: '10px' }}>{sub.name}</h4>
+-                  <p style={{ fontSize: '15px', lineHeight: '1.6', color: '#6D436A', margin: 0 }}>{sub.text}</p>
+-                </div>
+-              ))}
+-            </div>
+-          ))}
++    <>
++      <style>{`
++        .premium-blog-post-view {
++          background: #FDF7FE;
++          min-height: 100vh;
++          font-family: 'DM Sans', sans-serif;
++          padding-bottom: 0px;
++        }
++
++        .post-hero-premium {
++          padding: 160px 20px 100px; /* Restored elegant top padding */
++          text-align: center;
++          background-size: cover;
++          background-position: center;
++          position: relative;
++          color: white;
++          overflow: hidden;
++        }
++
++        .post-hero-overlay {
++          position: absolute;
++          top: 0; left: 0; width: 100%; height: 100%;
++          background: linear-gradient(180deg, rgba(30,10,30,0.8) 0%, rgba(45,13,45,0.95) 100%);
++          z-index: 1;
++        }
++
++        .hero-premium-content {
++          position: relative;
++          z-index: 2;
++          max-width: 900px;
++          margin: 0 auto;
++        }
++
++        .post-category-badge {
++          background: rgba(255, 255, 255, 0.15);
++          backdrop-filter: blur(10px);
++          padding: 8px 24px;
++          border-radius: 50px;
++          font-size: 13px;
++          text-transform: uppercase;
++          letter-spacing: 2px;
++          color: #F2DA91;
++          font-weight: 800;
++          display: inline-block;
++          margin-bottom: 30px;
++          border: 1px solid rgba(242, 218, 145, 0.3);
++        }
++
++        .post-title-premium {
++          font-family: 'DM Sans', serif;
++          font-size: clamp(36px, 5vw, 56px);
++          line-height: 1.25;
++          font-weight: 800;
++          margin-bottom: 40px;
++        }
++
++        .post-meta-premium {
++          display: flex;
++          align-items: center;
++          justify-content: center;
++          gap: 20px;
++          font-size: 15px;
++          font-weight: 500;
++          color: rgba(255, 255, 255, 0.85);
++        }
++
++        .meta-divider {
++          width: 5px;
++          height: 5px;
++          background: #F2DA91;
++          border-radius: 50%;
++        }
++
++        .post-author-info {
++          display: flex;
++          align-items: center;
++          gap: 12px;
++        }
++
++        .post-author-avatar {
++          width: 44px;
++          height: 44px;
++          border-radius: 50%;
++          background: linear-gradient(135deg, #F0D4F3 0%, #E0BCE4 100%);
++          color: #4F1C4C;
++          display: flex;
++          align-items: center;
++          justify-content: center;
++          font-weight: 800;
++          font-size: 18px;
++        }
++
++        .post-layout-grid {
++          display: grid;
++          grid-template-columns: 1fr 300px;
++          gap: 50px;
++          max-width: 1200px;
++          margin: -60px auto 80px;
++          padding: 0 20px;
++          position: relative;
++          z-index: 10;
++        }
++
++        .post-sidebar {
++           /* Sticky TOC Container */
++        }
++        
++        .toc-box {
++           background: white;
++           padding: 30px;
++           border-radius: 20px;
++           box-shadow: 0 15px 35px rgba(79, 28, 76, 0.05);
++           position: sticky;
++           top: 100px; /* Offset for sticky nav */
++        }
++
++        .toc-title {
++           font-size: 18px;
++           color: #2D0D2D;
++           font-weight: 800;
++           margin-bottom: 20px;
++           padding-bottom: 15px;
++           border-bottom: 2px solid #F4E8F4;
++        }
++        
++        .toc-list {
++           list-style: none;
++           padding: 0;
++           margin: 0;
++        }
++
++        .toc-list li {
++           margin-bottom: 12px;
++        }
++
++        .toc-list a {
++           color: #6D436A;
++           text-decoration: none;
++           font-size: 14px;
++           line-height: 1.5;
++           display: block;
++           transition: color 0.3s ease, padding-left 0.3s ease;
++        }
++
++        .toc-list a:hover {
++           color: #8a4a8a;
++           padding-left: 5px;
++           font-weight: 600;
++        }
++
++        .post-body-container {
++          background: white;
++          padding: clamp(40px, 6vw, 60px);
++          border-radius: 24px;
++          box-shadow: 0 25px 60px rgba(79, 28, 76, 0.08);
++        }
++
++        .post-intro-premium {
++          font-size: 21px;
++          line-height: 1.8;
++          color: #4F1C4C;
++          font-style: italic;
++          font-weight: 500;
++          margin-bottom: 50px;
++          border-left: 4px solid #F2DA91;
++          padding-left: 25px;
++        }
++
++        .post-section-title {
++          font-size: clamp(26px, 4vw, 32px);
++          color: #2D0D2D;
++          font-weight: 800;
++          margin: 60px 0 24px;
++          line-height: 1.35;
++        }
++
++        .post-paragraph {
++          font-size: 18px;
++          line-height: 1.85;
++          color: #5d3a5a;
++          margin-bottom: 24px;
++        }
++
++        .post-subsection {
++          background: #FDF7FE;
++          border-left: 4px solid #A177A1;
++          padding: 35px;
++          border-radius: 0 16px 16px 0;
++          margin: 40px 0;
++        }
++
++        .post-subsection h4 {
++          font-size: 20px;
++          color: #2D0D2D;
++          margin-bottom: 12px;
++          font-weight: 800;
++        }
++
++        .post-subsection p {
++          font-size: 17px;
++          line-height: 1.7;
++          color: #6D436A;
++          margin: 0;
++        }
++
++        .post-conclusion-premium {
++          background: linear-gradient(135deg, #F0D4F3 0%, #FDF7FE 100%);
++          padding: 40px;
++          border-radius: 20px;
++          margin-top: 60px;
++          font-size: 19px;
++          line-height: 1.8;
++          color: #4F1C4C;
++          font-weight: 700;
++          text-align: center;
++          box-shadow: inset 0 0 20px rgba(255,255,255,0.8);
++        }
++
++        .author-bio-box {
++          display: flex;
++          gap: 25px;
++          align-items: center;
++          margin-top: 80px;
++          padding-top: 50px;
++          border-top: 1px solid #F4E8F4;
++        }
++
++        .author-bio-avatar {
++          width: 80px;
++          height: 80px;
++          border-radius: 50%;
++          background: linear-gradient(135deg, #2D0D2D 0%, #4F1C4C 100%);
++          color: #F2DA91;
++          display: flex;
++          align-items: center;
++          justify-content: center;
++          font-size: 32px;
++          font-weight: 800;
++          flex-shrink: 0;
++        }
++
++        .author-bio-text h3 {
++          font-size: 22px;
++          color: #2D0D2D;
++          margin-bottom: 8px;
++          font-weight: 800;
++        }
+ 
+-          <div style={{ padding: '30px', borderLeft: '4px solid #F0D4F3', background: '#FDF7FE', marginBottom: '40px' }}>
+-             <p style={{ fontSize: '16px', lineHeight: '1.8', color: '#4F1C4C', margin: 0, fontWeight: '600' }}>
++        .author-bio-text p {
++          font-size: 16px;
++          color: #6D436A;
++          line-height: 1.6;
++          margin: 0;
++        }
++
++        /* Suggested Blogs Section */
++        .suggested-blogs-section {
++          max-width: 1200px;
++          margin: 0 auto 80px;
++          padding: 0 20px;
++        }
++        
++        .suggested-title {
++          font-size: 28px;
++          color: #2D0D2D;
++          font-weight: 800;
++          margin-bottom: 30px;
++          text-align: center;
++        }
++
++        .suggested-grid {
++          display: grid;
++          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
++          gap: 30px;
++        }
++
++        .suggested-card {
++           background: white;
++           border-radius: 16px;
++           overflow: hidden;
++           box-shadow: 0 10px 25px rgba(79, 28, 76, 0.05);
++           text-decoration: none;
++           color: inherit;
++           display: flex;
++           flex-direction: column;
++           transition: transform 0.3s ease;
++        }
++
++        .suggested-card:hover {
++           transform: translateY(-5px);
++        }
++
++        .suggested-card-img {
++           height: 180px;
++           width: 100%;
++           object-fit: cover;
++        }
++
++        .suggested-card-content {
++           padding: 25px;
++           flex: 1;
++           display: flex;
++           flex-direction: column;
++        }
++
++        .suggested-card-category {
++           font-size: 11px;
++           color: #8a4a8a;
++           font-weight: 800;
++           text-transform: uppercase;
++           letter-spacing: 1px;
++           margin-bottom: 10px;
++        }
++
++        .suggested-card-title {
++           font-size: 18px;
++           color: #2D0D2D;
++           font-weight: 700;
++           line-height: 1.4;
++           margin: 0;
++           display: -webkit-box;
++           -webkit-line-clamp: 2;
++           -webkit-box-orient: vertical;
++           overflow: hidden;
++        }
++
++        .post-footer-cta {
++          padding: 100px 20px;
++          background: #4F1C4C;
++          text-align: center;
++          color: white;
++          position: relative;
++        }
++
++        @media (max-width: 992px) {
++          .post-layout-grid {
++             grid-template-columns: 1fr;
++          }
++          .post-sidebar {
++             order: -1;
++          }
++          .toc-box {
++             position: relative;
++             top: 0;
++          }
++          .suggested-grid {
++            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
++          }
++        }
++
++        @media (max-width: 768px) {
++          .post-hero-premium {
++            padding-top: 150px;
++          }
++          .author-bio-box {
++            flex-direction: column;
++            text-align: center;
++          }
++          .post-meta-premium {
++            flex-direction: column;
++            gap: 15px;
++          }
++          .meta-divider {
++             display: none;
++          }
++        }
++      `}</style>
++
++      <div className="premium-blog-post-view">
++        <section className="post-hero-premium" style={{ backgroundImage: `url(${post.image})` }}>
++           <div className="post-hero-overlay"></div>
++           <div className="hero-premium-content">
++             <div className="post-category-badge">{post.category}</div>
++             <h1 className="post-title-premium">{post.title}</h1>
++             <div className="post-meta-premium">
++               <div className="post-author-info">
++                 <div className="post-author-avatar">A</div>
++                 <span>{post.author}</span>
++               </div>
++               <div className="meta-divider"></div>
++               <span>{post.date}</span>
++               <div className="meta-divider"></div>
++               <span>5 min read</span>
++             </div>
++           </div>
++        </section>
++
++        <div className="post-layout-grid">
++           {/* Main Content Area */}
++           <section className="post-body-container">
++             <p className="post-intro-premium">{post.intro}</p>
++   
++             {post.sections.map((section, idx) => (
++               <div key={idx} id={`section-${idx}`}>
++                 <h2 className="post-section-title">{section.title}</h2>
++                 {section.content && (
++                   <p className="post-paragraph">{section.content}</p>
++                 )}
++                 {section.subsections && section.subsections.map((sub, sidx) => (
++                   <div key={sidx} className="post-subsection">
++                     <h4>{sub.name}</h4>
++                     <p>{sub.text}</p>
++                   </div>
++                 ))}
++               </div>
++             ))}
++   
++             <div className="post-conclusion-premium">
+                {post.conclusion}
+-             </p>
+-          </div>
+-        </div>
+-      </section>
+-
+-      {/* 3. FAQ Section */}
+-      {post.faqs && post.faqs.length > 0 && (
+-        <FAQ questions={post.faqs} title="Article FAQs" />
+-      )}
+-
+-      {/* 4. Footer CTA */}
+-      <section style={{ padding: '80px 20px', textAlign: 'center' }}>
+-        <h3 style={{ color: '#4F1C4C', marginBottom: '20px' }}>Ready for a personalized consultation?</h3>
+-        <Link to="/contact" style={{ 
+-          display: 'inline-block', 
+-          padding: '15px 40px', 
+-          background: '#4F1C4C', 
+-          color: 'white', 
+-          textDecoration: 'none', 
+-          borderRadius: '50px', 
+-          fontWeight: '700' 
+-        }}>Consult Abhirang Spectrum</Link>
+-        <div style={{ marginTop: '30px' }}>
+-          <Link to="/blog" style={{ color: '#A177A1', textDecoration: 'none', fontSize: '14px' }}>ΓåÉ Back to all articles</Link>
++             </div>
++   
++             <div className="author-bio-box">
++                <div className="author-bio-avatar">A</div>
++                <div className="author-bio-text">
++                  <h3>Abhirang Spectrum</h3>
++                  <p>We are dedicated to helping individuals discover clarity, purpose, and balance in life through the ancient sciences of Graphology, Astrology, Numerology, Vastu Shastra, and Quantum Reiki Healing.</p>
++                </div>
++             </div>
++           </section>
++
++           {/* Sidebar: Table of Contents */}
++           <aside className="post-sidebar">
++              <div className="toc-box">
++                 <h3 className="toc-title">Table of Contents</h3>
++                 <ul className="toc-list">
++                    {post.sections.map((section, idx) => (
++                       <li key={idx}>
++                          <a href={`#section-${idx}`} onClick={(e) => {
++                             e.preventDefault();
++                             const el = document.getElementById(`section-${idx}`);
++                             if (el) {
++                               // Offset for sticky nav
++                               window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
++                             }
++                          }}>{section.title}</a>
++                       </li>
++                    ))}
++                 </ul>
++              </div>
++           </aside>
+         </div>
+-      </section>
+-    </div>
++
++        {/* Suggested Blogs Section */}
++        <section className="suggested-blogs-section">
++           <h2 className="suggested-title">Keep Exploring</h2>
++           <div className="suggested-grid">
++              {Object.keys(blogContent)
++                 .filter(key => key !== id) // Exclude current post
++                 .slice(0, 3) // Take up to 3 posts
++                 .map(key => {
++                    const suggested = blogContent[key];
++                    return (
++                       <Link to={`/blog/${key}`} key={key} className="suggested-card">
++                          <img src={suggested.image} alt={suggested.title} className="suggested-card-img" />
++                          <div className="suggested-card-content">
++                             <div className="suggested-card-category">{suggested.category}</div>
++                             <h4 className="suggested-card-title">{suggested.title}</h4>
++                          </div>
++                       </Link>
++                    );
++                 })}
++           </div>
++        </section>
++
++        <section className="post-footer-cta">
++          <h2 style={{ fontSize: 'clamp(32px, 5vw, 42px)', color: '#F2DA91', marginBottom: '20px', fontWeight: '800' }}>Ready for a personalized consultation?</h2>
++          <p style={{ fontSize: '18px', opacity: '0.9', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>Take the first step toward understanding your life's direction and unlocking your true potential.</p>
++          <Link to="/contact" style={{ 
++            display: 'inline-block', 
++            padding: '16px 45px', 
++            background: '#F2DA91', 
++            color: '#4F1C4C', 
++            textDecoration: 'none', 
++            borderRadius: '50px', 
++            fontWeight: '800',
++            fontSize: '16px',
++            transition: 'all 0.3s ease'
++          }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>Consult Abhirang Spectrum</Link>
++          <div style={{ marginTop: '50px' }}>
++            <Link to="/blog" style={{ color: 'white', opacity: 0.8, textDecoration: 'none', fontSize: '15px', fontWeight: '700' }}>ΓåÉ Back to all articles</Link>
++          </div>
++        </section>
++      </div>
++    </>
+   );
+ };
+ 

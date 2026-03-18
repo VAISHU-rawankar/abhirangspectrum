@@ -1,91 +1,105 @@
 import fs from 'fs';
 import path from 'path';
-import * as cheerio from 'cheerio';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const pagesDir = path.join(__dirname, 'www.healholistic.in');
-const outDir = path.join(__dirname, 'src', 'pages');
+const pagesDir = path.join(__dirname, 'src', 'pages');
+const appDir = path.join(__dirname, 'app');
 
-const pagesToConvert = [
-  { file: 'home.html', name: 'Home' },
-  { file: 'services.html', name: 'Services' },
-  { file: 'Quantum Reiki.html', name: 'QuantumReiki' },
-  { file: 'Anhad Naad.html', name: 'AnhadNaad' },
-  { file: 'about.html', name: 'About' },
-  { file: 'blog.html', name: 'Blog' },
-  { file: 'form.html', name: 'Contact' },
-];
-
-pagesToConvert.forEach(page => {
-  const filePath = path.join(pagesDir, page.file);
-  if (!fs.existsSync(filePath)) {
-     console.log(`File not found: ${filePath}`);
-     return;
-  }
-  const html = fs.readFileSync(filePath, 'utf-8');
-  const $ = cheerio.load(html);
-  
-  // Remove navigation and scripts
-  $('script').remove();
-  $('.desktop-nav, .mobile-hamburger, .mobile-menu-overlay, nav, header, footer').remove();
-  
-  // Extract custom styles but clean them
-  let headStyles = '';
-  $('head style').each((i, el) => {
-    let styleText = $(el).text();
-    // Remove body/html/font-face from component styles to avoid clashing
-    styleText = styleText.replace(/body\s*\{[^}]*\}/gi, '');
-    styleText = styleText.replace(/html\s*\{[^}]*\}/gi, '');
-    headStyles += `<style>${styleText}</style>\n`;
-  });
-
-  // Fix image paths
-  $('img').each((i, el) => {
-    const src = $(el).attr('src');
-    if (src && !src.startsWith('/') && !src.startsWith('http')) {
-      $(el).attr('src', '/' + src);
-    }
-  });
-
-  // Fix links to use clean paths (will be handled by Link components usually, but good to have)
-  $('a').each((i, el) => {
-    let href = $(el).attr('href');
-    if (href) {
-      if (href === 'index.html' || href === 'home.html') href = '/';
-      else if (href === 'services.html') href = '/services';
-      else if (href === 'Quantum Reiki.html') href = '/quantum-reiki';
-      else if (href === 'Anhad Naad.html') href = '/anhad-naad';
-      else if (href === 'about.html') href = '/about';
-      else if (href === 'blog.html') href = '/blog';
-      else if (href === 'form.html') href = '/contact';
-      $(el).attr('href', href);
-    }
-  });
-
-  let bodyHtml = $('body').html() || html;
-  const bodyClass = $('body').attr('class') || '';
-  const bodyStyle = $('body').attr('style') || '';
-  
-  // Wrap in page-wrapper for consistent layout
-  bodyHtml = headStyles + `<div class="page-body ${bodyClass}" style="${bodyStyle}">` + bodyHtml + `</div>`;
-
-  bodyHtml = bodyHtml.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
-  
-  const componentStr = `import React from 'react';
-import parse from 'html-react-parser';
-
-export default function ${page.name}() {
-  const htmlContent = \`${bodyHtml}\`;
-  return (
-    <div className="page-wrapper ${page.name.toLowerCase()}-wrapper">
-      {parse(htmlContent)}
-    </div>
-  );
+if (!fs.existsSync(appDir)) {
+  fs.mkdirSync(appDir);
 }
-`;
 
-  fs.writeFileSync(path.join(outDir, `${page.name}.jsx`), componentStr);
-});
+const pages = fs.readdirSync(pagesDir).filter(f => f.endsWith('.jsx'));
+
+for (const page of pages) {
+  const pageName = page.replace('.jsx', '');
+  if (pageName === 'Home') continue;
+  
+  let targetFolder;
+  if (pageName === 'BlogPost') {
+    targetFolder = path.join(appDir, 'blog', '[id]');
+  } else {
+    let slug = pageName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    targetFolder = path.join(appDir, slug);
+  }
+
+  if (!fs.existsSync(targetFolder)) {
+    fs.mkdirSync(targetFolder, { recursive: true });
+  }
+
+  const oldPath = path.join(pagesDir, page);
+  const newPath = path.join(targetFolder, 'page.jsx');
+
+  let content = fs.readFileSync(oldPath, 'utf-8');
+  
+  if (!content.startsWith('"use client"')) {
+    content = `"use client";\n\n` + content;
+  }
+
+  content = content.replace(/import\s+\{(.*?)\}\s+from\s+['"]react-router-dom['"]/g, (match, p1) => {
+    let hasLink = p1.includes('Link');
+    let hasNavigate = p1.includes('useNavigate');
+    let hasParams = p1.includes('useParams');
+    let hasLocation = p1.includes('useLocation');
+    
+    let res = "";
+    if (hasLink) res += `import Link from 'next/link';\n`;
+    
+    let navImports = [];
+    if (hasNavigate) navImports.push('useRouter');
+    if (hasParams) navImports.push('useParams');
+    if (hasLocation) navImports.push('usePathname');
+    
+    if (navImports.length > 0) {
+      res += `import { ${navImports.join(', ')} } from 'next/navigation';\n`;
+    }
+    return res;
+  });
+
+  content = content.replace(/useNavigate\(/g, 'useRouter(');
+  content = content.replace(/<Link(.*?)to=/g, '<Link$1href=');
+  
+  fs.writeFileSync(newPath, content, 'utf-8');
+}
+
+const componentsDir = path.join(__dirname, 'src', 'components');
+if (fs.existsSync(componentsDir)) {
+  const components = fs.readdirSync(componentsDir).filter(f => f.endsWith('.jsx'));
+  for (const comp of components) {
+    const compPath = path.join(componentsDir, comp);
+    let content = fs.readFileSync(compPath, 'utf-8');
+
+    if (!content.startsWith('"use client"')) {
+      content = `"use client";\n\n` + content;
+    }
+
+    content = content.replace(/import\s+\{(.*?)\}\s+from\s+['"]react-router-dom['"]/g, (match, p1) => {
+      let hasLink = p1.includes('Link');
+      let hasNavigate = p1.includes('useNavigate');
+      let hasParams = p1.includes('useParams');
+      let hasLocation = p1.includes('useLocation');
+      
+      let res = "";
+      if (hasLink) res += `import Link from 'next/link';\n`;
+      
+      let navImports = [];
+      if (hasNavigate) navImports.push('useRouter');
+      if (hasParams) navImports.push('useParams');
+      if (hasLocation) navImports.push('usePathname');
+      
+      if (navImports.length > 0) {
+        res += `import { ${navImports.join(', ')} } from 'next/navigation';\n`;
+      }
+      return res;
+    });
+
+    content = content.replace(/useNavigate\(/g, 'useRouter(');
+    content = content.replace(/<Link(.*?)to=/g, '<Link$1href=');
+
+    fs.writeFileSync(compPath, content, 'utf-8');
+  }
+}
+console.log("Migration script complete");

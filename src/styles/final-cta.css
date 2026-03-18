@@ -117,12 +117,12 @@
 
 .final-cta-content .cta-btn::before {
     left: 15px;
-    background-image: url("frame1.svg");
+    background-image: url('/frame1.svg');
 }
 
 .final-cta-content .cta-btn::after {
     right: 15px;
-    background-image: url("frame1.svg");
+    background-image: url('/frame1.svg');
     transform: translateY(-50%) rotate(180deg);
 }
 

@@ -1,15 +1,19 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+;
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const location = useLocation();
+    const pathname = usePathname();
 
     // Close menu on route change
     useEffect(() => {
         setIsMenuOpen(false);
         document.body.style.overflow = '';
-    }, [location]);
+    }, [pathname]);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -74,7 +78,7 @@ const Header = () => {
                 <ul className="mobile-nav-links" style={{ listStyle: 'none', padding: 0, margin: 0, width: '100%', textAlign: 'center' }}>
                     {navItems.map(item => (
                         <li key={item.path} style={{ margin: '15px 0' }}>
-                            <Link to={item.path} onClick={closeMenu} style={{ color: 'white', textDecoration: 'none', fontSize: '24px', fontFamily: "'DM Sans', sans-serif", fontWeight: 700 }}>
+                            <Link href={item.path} onClick={closeMenu} style={{ color: 'white', textDecoration: 'none', fontSize: '24px', fontFamily: "'DM Sans', sans-serif", fontWeight: 700 }}>
                                 {item.name}
                             </Link>
                         </li>
@@ -82,10 +86,10 @@ const Header = () => {
                 </ul>
             </div>
 
-            <nav className="desktop-nav" style={{ position: 'fixed', top: 0, width: '100%', background: 'rgba(244, 222, 250, 0.95)', backdropFilter: 'blur(10px)', zIndex: 10, padding: '0 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+            <nav className="desktop-nav" style={{ position: 'fixed', top: 0, width: '100%', background: 'rgba(244, 222, 250, 0.95)', backdropFilter: 'blur(10px)', zIndex: 995, padding: '0 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
                 <div className="nav-container" style={{ display: 'flex', alignItems: 'center', maxWidth: '1400px', margin: '0 auto', height: '70px', justifyContent: 'space-between' }}>
                     <div className="logo-container">
-                        <Link to="/" className="logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <Link href="/" className="logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <img src="/favicon/abhirang.jpeg" alt="Abhirang Spectrum" style={{ height: '45px', width: 'auto', borderRadius: '4px' }} />
                             <span style={{ color: 'var(--primary-purple)', fontSize: '20px', fontWeight: '800' }}>Abhirang Spectrum</span>
                         </Link>
@@ -93,13 +97,13 @@ const Header = () => {
                     <ul className="nav-links" style={{ display: 'flex', listStyle: 'none', gap: '2rem', margin: 0, padding: 0 }}>
                         {navItems.map(item => (
                             <li key={item.path}>
-                                <Link to={item.path} style={{ 
+                                <Link href={item.path} style={{ 
                                     textDecoration: 'none', 
                                     color: 'var(--primary-purple)', 
-                                    fontWeight: location.pathname === item.path ? '800' : '500', 
+                                    fontWeight: pathname === item.path ? '800' : '500', 
                                     fontSize: '15px',
                                     padding: '10px 0',
-                                    borderBottom: location.pathname === item.path ? '2px solid var(--primary-purple)' : '2px solid transparent',
+                                    borderBottom: pathname === item.path ? '2px solid var(--primary-purple)' : '2px solid transparent',
                                     transition: 'all 0.3s ease'
                                 }}>
                                     {item.name}

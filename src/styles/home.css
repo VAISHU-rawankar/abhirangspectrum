@@ -2289,7 +2289,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('uparrow.svg');
+  background-image: url('/uparrow.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2302,7 +2302,7 @@ footer {
 }
 
 .service-card.expanded .arrow-circle {
-  background-image: url('downarrow.svg');
+  background-image: url('/downarrow.svg');
   transform: rotate(0);
   /* No rotation needed as SVGs already point the right way */
 }

@@ -1,7 +1,42 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+;
 
 const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const pathname = usePathname();
+
+    // Scroll to top on route change
+    useEffect(() => {
+        // Prevent aggressive browser scroll restoration
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual';
+        }
+
+        const forceScroll = () => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        };
+
+        // Fire 1: Immediate
+        forceScroll();
+        
+        // Fire subsequent scrolls handling potential Suspense load times
+        const timeouts = [
+            setTimeout(forceScroll, 10),
+            setTimeout(forceScroll, 50),
+            setTimeout(forceScroll, 150),
+            setTimeout(forceScroll, 300),
+            setTimeout(forceScroll, 600)
+        ];
+
+        return () => {
+            timeouts.forEach(clearTimeout);
+        };
+    }, [pathname]);
 
     // Show button when page is scrolled down
     const toggleVisibility = () => {

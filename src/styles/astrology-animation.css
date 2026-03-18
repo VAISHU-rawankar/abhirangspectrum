@@ -1,0 +1,140 @@
+.astrology-animation-container {
+  position: absolute;
+  top: 50%;
+  width: 45vw;
+  max-width: 450px;
+  min-width: 320px;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  z-index: 2; /* Above video, below text */
+  opacity: 0.35;
+}
+
+.astrology-side-left {
+  left: -10vw;
+  transform: translateY(-50%);
+}
+
+.astrology-side-right {
+  right: -10vw;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 768px) {
+  .astrology-side-left {
+    left: -20vw;
+    opacity: 0.2;
+  }
+  .astrology-side-right {
+    right: -20vw;
+    opacity: 0.2;
+  }
+}
+
+.astrology-wheel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px dashed rgba(242, 218, 145, 0.35);
+  animation: spin-slow 180s linear infinite;
+  box-shadow: inset 0 0 50px rgba(242, 218, 145, 0.05);
+}
+
+.astrology-wheel-inner {
+  position: absolute;
+  top: 22%;
+  left: 22%;
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 218, 145, 0.25);
+  animation: spin-reverse-slow 120s linear infinite;
+}
+
+.sacred-geometry {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(242, 218, 145, 0.1);
+}
+
+.inner-geom-1 { transform: rotate(30deg); }
+.inner-geom-2 { transform: rotate(60deg); }
+.inner-geom-3 { transform: rotate(45deg); border-radius: 15%; }
+
+.astrology-sun-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20%;
+  height: 20%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 218, 145, 0.15) 0%, transparent 60%);
+  animation: pulse-glow 4s ease-in-out infinite alternate;
+}
+
+.zodiac-sign-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 50%;
+  width: 40px;
+  margin-left: -20px;
+  transform-origin: bottom center;
+}
+
+.zodiac-sign {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #f2da91;
+  font-size: 26px;
+  text-shadow: 0 0 12px rgba(242, 218, 145, 0.6);
+  /* Reverse rotation animation so they remain upright */
+  animation: spin-reverse-slow 180s linear infinite;
+}
+
+.planet-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 50%;
+  width: 30px;
+  margin-left: -15px;
+  transform-origin: bottom center;
+}
+
+.planet-symbol {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #f2da91;
+  font-size: 20px;
+  opacity: 0.85;
+  text-shadow: 0 0 8px rgba(242, 218, 145, 0.4);
+  /* Reverse rotation to stay upright */
+  animation: spin-slow 120s linear infinite;
+}
+
+@keyframes spin-slow {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse-slow {
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes pulse-glow {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}

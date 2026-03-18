@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/anhad-naad/page": "/anhad-naad",
+  "/astrology/page": "/astrology",
+  "/blog/[id]/page": "/blog/[id]",
+  "/blog/page": "/blog",
+  "/contact/page": "/contact",
+  "/graphology/page": "/graphology",
+  "/numerology/page": "/numerology",
+  "/page": "/",
+  "/privacy-policy/page": "/privacy-policy",
+  "/quantum-reiki/page": "/quantum-reiki",
+  "/refund-policy/page": "/refund-policy",
+  "/services/page": "/services",
+  "/terms-of-service/page": "/terms-of-service",
+  "/vastu-shastra/page": "/vastu-shastra"
+}

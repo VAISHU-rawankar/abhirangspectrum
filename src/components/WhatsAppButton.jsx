@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 const WhatsAppButton = () => {
@@ -55,7 +57,7 @@ const WhatsAppButton = () => {
                 `}
             </style>
             <a 
-                href="https://wa.me/919762439208?text=Hello%20Abhirang%20Spectrum!%20I'm%20interested%20in%20a%20consultation." 
+                href="https://wa.me/919309293155?text=Hello%20Abhirang%20Spectrum!%20I'm%20interested%20in%20a%20consultation." 
                 className="whatsapp-float"
                 target="_blank" 
                 rel="noopener noreferrer"

@@ -398,7 +398,7 @@ body.animation-active nav.desktop-nav *:after {
 /* Static Stars with Hover Effect */
 .star {
   position: absolute;
-  background-image: url("star.svg");
+  background-image: url('/star.svg');
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.8;
@@ -604,7 +604,7 @@ body.main-page .cta-btn:hover::after {
 /* Purple Button Frames */
 body.main-page .cta-btn.purple::before,
 body.main-page .cta-btn.purple::after {
-  background-image: url("frame.svg");
+  background-image: url('/frame.svg');
   width: 20px;
   height: 15px;
 }
@@ -2184,7 +2184,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('uparrow.svg');
+  background-image: url('/uparrow.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2197,7 +2197,7 @@ footer {
 }
 
 .service-card.expanded .arrow-circle {
-  background-image: url('downarrow.svg');
+  background-image: url('/downarrow.svg');
   transform: rotate(0);
   /* No rotation needed as SVGs already point the right way */
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 const ServicePageTemplate = ({ title, subtitle, description, features, imageAlt, bgClass }) => {
