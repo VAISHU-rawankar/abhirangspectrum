@@ -14,15 +14,18 @@ export default function FloatingAstrologyBackground() {
 
   useEffect(() => {
     // Generate random positions only on the client to avoid hydration mismatch
-    const generated = Array.from({ length: 40 }).map((_, i) => ({
+    const isMobile = window.innerWidth <= 768;
+    const numElements = isMobile ? 18 : 40;
+
+    const generated = Array.from({ length: numElements }).map((_, i) => ({
       id: i,
       symbol: symbols[Math.floor(Math.random() * symbols.length)],
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      size: Math.random() * 25 + 15, // between 15px and 40px
+      size: isMobile ? (Math.random() * 15 + 12) : (Math.random() * 25 + 15), // smaller on mobile
       duration: Math.random() * 15 + 15, // between 15s and 30s
       delay: Math.random() * 5,
-      opacity: Math.random() * 0.4 + 0.1
+      opacity: isMobile ? (Math.random() * 0.25 + 0.05) : (Math.random() * 0.4 + 0.1) // lower opacity on mobile
     }));
     setElements(generated);
   }, []);

@@ -21,13 +21,41 @@
 }
 
 @media (max-width: 768px) {
+  .astrology-animation-container {
+    width: 70vw;
+    min-width: 200px;
+    opacity: 0.15;
+  }
   .astrology-side-left {
-    left: -20vw;
-    opacity: 0.2;
+    left: -35vw;
+    top: 30%;
   }
   .astrology-side-right {
-    right: -20vw;
-    opacity: 0.2;
+    right: -35vw;
+    top: 70%;
+  }
+}
+@media (max-width: 480px) {
+  .astrology-animation-container {
+    width: 90vw;
+    min-width: 150px;
+    opacity: 0.12;
+  }
+  .astrology-side-left {
+    left: -40vw;
+    top: 25%;
+  }
+  .astrology-side-right {
+    right: -40vw;
+    top: 75%;
+  }
+  .zodiac-sign {
+    font-size: 16px;
+    top: -10px;
+  }
+  .planet-symbol {
+    font-size: 12px;
+    top: -8px;
   }
 }
 
