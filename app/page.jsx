@@ -150,7 +150,7 @@ export default function Home() {
               fontWeight: '700',
               fontSize: '16px'
             }}>Book a Consultation</Link>
-            <Link href="/services" style={{
+            <Link href="/blog" style={{
               padding: '15px 40px',
               border: '2px solid #f2da91',
               color: '#f2da91',
@@ -158,7 +158,7 @@ export default function Home() {
               borderRadius: '50px',
               fontWeight: '700',
               fontSize: '16px'
-            }}>Explore Our Services</Link>
+            }}>Explore Our Blogs</Link>
           </div>
         </motion.div>
       </section>
